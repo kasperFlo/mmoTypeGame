@@ -3,4 +3,6 @@ def slimeInfo():
     Strength = 1
     Health = 4
     speed = -1
-    return mobType,Strength,Health,speed
+    deff = 1
+    ress = 3
+    return mobType,Strength,Health,speed,deff,ress
