@@ -1,13 +1,13 @@
 #implements the game data and logic.
 #import classes.barbarian as barb
-#clear = lambda: os.system('cls') # windows
-clear = lambda: os.system('clear') # mac
+clear = lambda: os.system('cls') # windows
+#clear = lambda: os.system('clear') # mac
 from math import ceil
 from mimetypes import init
 from tabnanny import check
 from webbrowser import get
 import classes.barbarian as barb,classes.wizzard as wiz,os
-textCenterAmount = 60
+textCenterAmount = 70
 def selectOcupation(selectClass):
     global ocupation
     if selectClass.lower() == "barbarian" or selectClass.lower() == "barb":
@@ -98,7 +98,8 @@ class eni():
     
 
     def printStats(self):
-        print("mobType = {}".format(self.getMobType()).center(textCenterAmount))
+        print(f"you currently are fighting a {self.getMobType()} the details are as follows".center(textCenterAmount))
+        print("mob clasification = {}".format(self.getMobType()).center(textCenterAmount))
         print("Str = {}".format(self.getStrength()).center(textCenterAmount))
         print("Hp = {}".format(self.getHealth()).center(textCenterAmount))
         print("Speed = {}".format(self.getSpeed()).center(textCenterAmount))
@@ -110,7 +111,7 @@ class eni():
         if newEni.lower() == "slime":
             import mobs.slime as slime
             cc = slime.slimeInfo()
-            print(f"mob returned stats are {cc}\n".center(textCenterAmount)) # test return value
+        #print(f"mob returned stats are {cc}\n".center(textCenterAmount)) # test return value
             self.setMobType(cc[0])
             self.setStrength(cc[1])
             self.setHealth(cc[2])
@@ -127,61 +128,65 @@ def checkAlive(thing):
     else:
         return False
 def youAtk(player, enemy):
-
+    eleDmg = 0
+    physDmg = 0
     #base dammage calculations
-        print("\nwhat plan of attack :".center(textCenterAmount))
-        print("(A) cast a spell".center(textCenterAmount))
-        print("(B) charge in and swing".center(textCenterAmount))
+    print("\nwhat plan of attack :".center(textCenterAmount))
+    print("(A) cast a spell".center(textCenterAmount))
+    print("(B) charge in and swing".center(textCenterAmount))
 
-        atkType = input("")
+    atkType = input("")
 #spell damage calculations
-        if(atkType.lower() == "a"):        
-            print("You start charging your Spell ".center(textCenterAmount))
-            eleDmg = (player.getStrength() * 0.5) + (player.getIntelligence() * 1) + (player.getDexterity() * 0.8) #spell damage formula 50% str + int + 80% of dex 
-            if (eleDmg < 0):  # floor spell damage
-                eleDmg = 0.5
-            dmgReduction = round(eleDmg * (enemy.getRess()/100),2 )  
+    if(atkType.lower() == "a"):        
+        print("You start charging your Spell ".center(textCenterAmount))
+        eleDmg = (player.getStrength() * 0.5) + (player.getIntelligence() * 1) + (player.getDexterity() * 0.8) #spell damage formula 50% str + int + 80% of dex 
+        if (eleDmg < 0):  # floor spell damage
+            eleDmg = 0.5
+        dmgReduction = round(eleDmg * (enemy.getRess()/100),2 )  
 
-            print(f"dmg is reduced by {dmgReduction} because of the targets resistance ".center(textCenterAmount)) 
-            trueDamage = eleDmg - dmgReduction # calculate true dmg check factoring in def / res
+        print(f"dmg is reduced by {dmgReduction} because of the targets resistance ".center(textCenterAmount)) 
+        trueDamage = eleDmg - dmgReduction # calculate true dmg check factoring in def / res
 
 # physical damage calculations
-        else:               
-            print("You start readying your Sword ".center(textCenterAmount))
-            physDmg = ((player.getStrength() * 1) + (player.getDexterity() * 0.8) + (player.getHealth()) * 0.5)   #sword damage formula str + 80% dex + 50% hp
-            if (physDmg < 0):  # floor phys dammage
-                physDmg = 1
-            dmgReduction = round((physDmg * (enemy.getDeff()/100) ),2) 
-            print(f"dmg is reduced by {dmgReduction} because of the defense ".center(textCenterAmount))
-            trueDamage = physDmg - dmgReduction  # calculate true dmg check factoring in def / res
+    else:               
+        print("You start readying your Sword ".center(textCenterAmount))
+        physDmg = ((player.getStrength() * 1) + (player.getDexterity() * 0.8) + (player.getHealth()) * 0.5)   #sword damage formula str + 80% dex + 50% hp
+        if (physDmg < 0):  # floor phys dammage
+            physDmg = 1
+        dmgReduction = round((physDmg * (enemy.getDeff()/100) ),2) 
+        print(f"dmg is reduced by {dmgReduction} because of the defense ".center(textCenterAmount))
+        trueDamage = physDmg - dmgReduction  # calculate true dmg check factoring in def / res
 
 # deal dammage to enemy
-        trueDamage = round(trueDamage,2)
-        enemy.setHealth(enemy.getHealth() - trueDamage)
+    trueDamage = round(trueDamage,2)
+    enemy.setHealth(enemy.getHealth() - trueDamage)
 # check enemy has been defeated
-        if(checkAlive(enemy) != True): 
-            print(f"{enemy.getMobType()} has been slain".center(textCenterAmount))
-            return False
-        else:
-            if(eleDmg != 0):
-                print(f"you hit the {enemy.getMobType()} with a spell dealing {trueDamage} dammage leaveing it with {round(enemy.getHealth(),2)} hp".center(textCenterAmount))
-                input("\n----press enter to continue to next turn----\n".center(textCenterAmount))
-            else:
-                print(f"you hit the {enemy.getMobType()} with a sword swing dealing {trueDamage} dammage leaveing it with {round(enemy.getHealth(),2)} hp".center(textCenterAmount))
-                input("\n----press enter to continue to next turn----\n".center(textCenterAmount))
+    if(checkAlive(enemy) != True): 
+        if(eleDmg > 0): #spell has been cast
+            print(f"{enemy.getMobType()} has been slain with a mighty spell dealing {trueDamage}dmg".center(textCenterAmount))
+        else:  #sword has been used
+            print(f"{enemy.getMobType()} has been slain with a sword swing dealing {trueDamage}dmg".center(textCenterAmount))
+        return False
+    else:
+        if(eleDmg > 0): #spell has been cast
+            print(f"you hit the {enemy.getMobType()} with a spell dealing {trueDamage} dammage leaveing it with {round(enemy.getHealth(),2)} hp".center(textCenterAmount))
+        else: #sword has been used
+            print(f"you hit the {enemy.getMobType()} with a sword swing dealing {trueDamage} dammage leaveing it with {round(enemy.getHealth(),2)} hp".center(textCenterAmount))
 
-        return True
+    return True
 
 def takeAtk(player, enemy):
     # deal dammage to user
 
         enemyDamage = (enemy.getStrength() + enemy.getSpeed()/4)
-        print(f"taking damage {enemyDamage}")
         player.setHealth(player.getHealth() - enemyDamage)
+        print(f"you take a hit from {enemy.getMobType()} taking {enemyDamage} damage leaving you with {player.getHealth()}hp")
+
         if(checkAlive(player) != True): 
             print(f"you have fainted as you have {player.getHealth}hp remaining ")
             return False
-
+        else:
+            return True
 def fight(player, enemy):
     running = True
     print(f"you are fighting a {enemy.getMobType()}".center(textCenterAmount))
@@ -189,21 +194,21 @@ def fight(player, enemy):
 
     while (running == True):
         #clear()
-        eleDmg = 0
-        physDmg = 0
         global trueDamage
-
 # state enimies
         print(f"{enemy.getMobType()} currently has {round(enemy.getHealth(),2)} hp".center(textCenterAmount))
+        print(f"you currently have {round(player.getHealth(),2)} hp".center(textCenterAmount))
 
 #speed check
         if (player.getSpeed() >  enemy.getSpeed()): 
             running = youAtk(player, enemy)
             running = takeAtk(player, enemy)
+            
         else:
             priority = 2
             running = takeAtk(player, enemy)
             running = youAtk(player, enemy)
+        input("\n----press enter to continue to next turn----\n".center(textCenterAmount))
 
 
 # starting ----------------------------------
