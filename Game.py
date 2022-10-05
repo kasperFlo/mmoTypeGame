@@ -1,35 +1,31 @@
 #implements the game data and logic.
-import classes.barbarian as barb ,classes.wizzard as wiz ,os
-#TODO GAME LOGIC
-clear = lambda: os.system('cls')
+#import classes.barbarian as barb
+import classes.barbarian as barb,classes.wizzard as wiz,os
+#clear = lambda: os.system('cls') # windows
+clear = lambda: os.system('clear') # mac
 
-class ocupationClass:
-    def __init__(self,classType = "0",Strength = 0,Health = 0,Dexterity = 0,Intelligence = 0):
-        if classType.lower() == "wizzard" or classType.lower() == "wiz":
-            cc = wiz.wizzardInfo()
-            self.classType = cc[0]
-            self.Strength = cc[1]
-            self.Health = cc[2]
-            self.Dexterity = cc[3]
-            self.Intelligence = cc[4]
 
-        elif classType.lower() == "barbarian" or classType.lower() == "barb":
-            cc = barb.barbarianInfo()
-            self.classType = cc[0]
-            self.Strength = cc[1]
-            self.Health = cc[2]
-            self.Dexterity = cc[3]
-            self.Intelligence = cc[4]
-            
-    def setStrength(newStrengthValue):
-        Strength = newStrengthValue
-    def setHealth(newHealthValue):
-        Health = newHealthValue
-    def setDexterity(newDexterityValue):
-        Dexterity = newDexterityValue
-    def setIntelligence(newIntelligenceValue):
-        Intelligence = newIntelligenceValue
-   
+def selectOcupation(selectClass):
+    global ocupation
+    if selectClass.lower() == "wizzard" or selectClass.lower() == "wiz":
+        ocupation = wiz.wizzardInfo
+    elif selectClass.lower() == "barbarian" or selectClass.lower() == "barb":
+        ocupation = barb.barbarianInfo
+
+def startGame():
+    selectOcupation(input("ocupation classes are 'wizzard' 'barbarian' "))
+
+startGame()
+
+class ocupationClass(ocupation):
+    def setStrength(self,newStrengthValue):
+        self.Strength = newStrengthValue
+    def setHealth(self,newHealthValue):
+        self.Health = newHealthValue
+    def setDexterity(self,newDexterityValue):
+        self.Dexterity = newDexterityValue
+    def setIntelligence(self,newIntelligenceValue):
+        self.Intelligence = newIntelligenceValue
     def getclassType(self):
         return self.classType
     def getStrength(self):
@@ -40,10 +36,15 @@ class ocupationClass:
         return self.Dexterity
     def getIntelligence(self):
         return self.Intelligence
-
-
-
-playerone = ocupationClass(input("ocupation classes are 'wizzard' 'barbarian' "))
+    
+    def printStats(self):
+        pad = 30
+        print("Class = {}".format(self.getclassType()).center(pad))
+        print("Str = {}".format(self.getStrength()).center(pad))
+        print("Hp = {}".format(self.getHealth()).center(pad))
+        print("Dex = {}".format(self.getDexterity()).center(pad))
+        print("Int = {}".format(self.getIntelligence()).center(pad))
+        
 clear()
-print(f"class = {playerone.getclassType()} \nstr = {playerone.getStrength()} \nhp = {playerone.getHealth()} \ndex = {playerone.getDexterity()} \nint = {playerone.getIntelligence()}")
-
+playerone = ocupationClass()
+playerone.printStats()

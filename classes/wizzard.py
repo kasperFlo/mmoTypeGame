@@ -1,7 +1,8 @@
-def wizzardInfo():
-    classType = "Wizzard"
-    Strength = -2
-    Health = 1
-    Dexterity = 1 
-    Intelligence = 2
-    return classType,Strength,Health,Dexterity,Intelligence
+class wizzardInfo():
+    def __init__(self,classType = "0",Strength = 0,Health = 0,Dexterity = 0,Intelligence = 0):
+        self.classType = "Wizzard"
+        self.Strength = -2
+        self.Health = 1
+        self.Dexterity = 1 
+        self.Intelligence = 2
+    
