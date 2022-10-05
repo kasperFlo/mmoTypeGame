@@ -5,3 +5,4 @@ class barbarianInfo():
         self.Health = 1
         self.Dexterity = 1
         self.Intelligence = -2
+        self.speed = 2

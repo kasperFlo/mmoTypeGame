@@ -1,2 +1,2 @@
 # implements the interactivity with the user.
-import Game
+import Game as game

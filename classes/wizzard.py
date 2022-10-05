@@ -4,5 +4,5 @@ class wizzardInfo():
         self.Strength = -2
         self.Health = 1
         self.Dexterity = 1 
-        self.Intelligence = 2
-    
+        self.Intelligence = 4
+        self.speed = 0
