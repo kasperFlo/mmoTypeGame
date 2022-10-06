@@ -6,24 +6,56 @@ from math import ceil
 from mimetypes import init
 from tabnanny import check
 from webbrowser import get
-import classes.barbarian as barb,classes.wizzard as wiz,os
+import classes.barbarian as barb,classes.wizzard as wiz,os,sys,time
 
 
 textCenterAmount = 80
 global running
+
 #--------------------------------------------- main method
+def text(words):
+    for characters in words:
+        sys.stdout.write(characters)
+        sys.stdout.flush()
+        time.sleep(0.000018)
+screen_width=100
+
 def selectOcupation(selectClass):
     global ocupation
     if selectClass.lower() == "barbarian" or selectClass.lower() == "barb":
         ocupation = barb.barbarianInfo
     elif selectClass.lower() == "wizard" or selectClass.lower() == "wiz":
         ocupation = wiz.wizzardInfo
-def startGame():    
+def startGame():   
+    answer = "no" 
     """
     run this on start to run the game
     """
     landingPad()    
-    selectOcupation(input("ocupation classes are 'wizard' 'barbarian' "))
+    text("Hello there travaler from another world, I plead you to save our world \n")
+    text("Ohh my where are my manners. Before I continue may I ask for you name travaler \n")
+    global pName
+    pName = input("> ")
+    text("\nThats a wonderful name '") ; text(pName)
+    text("' My name is #### or as some people refer to me as the unknown goddess \n")
+    text("My role is to oversee my world but right now although \n")
+    text("I dont want to admit it but my world has been forcefully taken over by the demon lord \n")
+    text("People live in a horible opresion under the demon lord  \n")
+    text("I wish for my people to be happy, so I summoned you from another world \n")
+    text("Can I count on you in saving the world from demon king ")
+    text(pName) ; text(" ??\n")
+    while(answer.lower() != "yes" ):
+        answer = input("> ")
+    answer = "i agree"
+    text("Thank you so much '") ; text(pName) ; text("' I knew I could count on you!!! \n") 
+    text("Before I summon you \nI must ask you what do type of fighter do best picture yourself as ")
+    while(True):
+        text("a wizard or a barbarian")
+        answer = input("\n > ")
+        if(answer.lower() == "wizard" or answer.lower() == "wiz" or answer.lower() == "barb" or answer.lower() == "barbarian"):
+            break
+    selectOcupation(answer)
+
 def landingPad():
     """
     lobby screen
@@ -57,6 +89,7 @@ class ocupationClass(ocupation):
         return self.speed
     
     def printStats(self):
+        print(f"Name = {pName}".center(textCenterAmount))
         print("Class = {}".format(self.getclassType()).center(textCenterAmount))
         print("Str = {}".format(self.getStrength()).center(textCenterAmount))
         print("Hp = {}".format(self.getHealth()).center(textCenterAmount))
@@ -98,11 +131,9 @@ class eni():
     def setDeff(self,newDeffValue):# defense 
         self.deff = newDeffValue
     def setRess(self,newRessValue):# resistance 
-        self.Ress = newRessValue
-    
-
+        self.Ress = newRessValue    
     def printStats(self):
-        print(f"you currently are fighting a {self.getMobType()} the details are as follows".center(textCenterAmount))
+        print(f"\u001b[36myou currently are fighting a {self.getMobType()} the details are as follows\u001b[0m\n".center(textCenterAmount))
         print("mob clasification = {}".format(self.getMobType()).center(textCenterAmount))
         print("Str = {}".format(self.getStrength()).center(textCenterAmount))
         print("Hp = {}".format(self.getHealth()).center(textCenterAmount))
@@ -110,18 +141,20 @@ class eni():
         print("Defense = {}".format(self.getDeff()).center(textCenterAmount))
         print("Resistance = {}".format(self.getRess()).center(textCenterAmount))
         print("")
-
     def changeMob(self,newEni):
         if newEni.lower() == "slime":
             import mobs.slime as slime
             cc = slime.slimeInfo()
+        elif newEni.lower() == "goblin":
+            import mobs.goblin as goblin
+            cc = goblin.goblinInfo()
         #print(f"mob returned stats are {cc}\n".center(textCenterAmount)) # test return value
-            self.setMobType(cc[0])
-            self.setStrength(cc[1])
-            self.setHealth(cc[2])
-            self.setSpeed(cc[3])
-            self.setDeff(cc[4])
-            self.setRess(cc[5])
+        self.setMobType(cc[0])
+        self.setStrength(cc[1])
+        self.setHealth(cc[2])
+        self.setSpeed(cc[3])
+        self.setDeff(cc[4])
+        self.setRess(cc[5])
 def checkAlive(thing):
     """
     check if the inputed thing is alive returns true if it is
@@ -178,7 +211,6 @@ def youAtk(player, enemy):
         else: #sword has been used
             print(f"you hit the {enemy.getMobType()} with a sword swing \u001b[32mdealing {trueDamage} damage\u001b[0m leaveing it with {round(enemy.getHealth(),2)} hp".center(textCenterAmount))
     return True
-
 def takeAtk(player, enemy):
     # deal dammage to user
 
@@ -189,7 +221,6 @@ def takeAtk(player, enemy):
             print(f"You have fainted as you have {player.getHealth()}HP remaining ")
             return False
         return True
-
 def fight(player, enemy) -> bool:
     """
     returns winner of fight with bool
@@ -208,45 +239,62 @@ def fight(player, enemy) -> bool:
         print(f"{enemy.getMobType()} Currently has \u001b[35m{round(enemy.getHealth(),2)} HP\u001b[0m".center(textCenterAmount))
         print(f"You currently have \u001b[35m{round(player.getHealth(),2)} HP\u001b[0m".center(textCenterAmount))
         print(f"\u001b[36mTurn {turn}\u001b[0m\n")
+        player.printStats()
+        enemy.printStats()
 #speed check
         if (player.getSpeed() >  enemy.getSpeed()): 
-
+            #priority move
             running = youAtk(player, enemy)
             if running == False:
                 fightWinner = True
                 return fightWinner
             running = takeAtk(player, enemy)
             if running == False:
-                fightWinner = False
-                return fightWinner
+                gameEnd()
         else:
-            #priority = 2
+            #priority second
             running = takeAtk(player, enemy)
             if running == False:
-                fightWinner = False   
-                return fightWinner
+                gameEnd()   
             running = youAtk(player, enemy)
             if running == False:
                 fightWinner = True
                 return fightWinner
         input(u"\u001b[36m\n----press enter to continue to next turn----\n\u001b[0m".center(textCenterAmount))
         turn += 1   
+def gameEnd():
+    time.sleep(5)
+    clear()
+    text("better luck next time traveler     . . . . . . . . ")
+    sys.exit()
 
 # starting ----------------------------------
-
-# creating character class
-playerone = ocupationClass()
 clear()
+#init
+playerone = ocupationClass() # creating character class
 playerone.printStats()
+e1 = eni() # creating enemy
+text("wow is this you so butifull so strong sheesh ^^^^\n")
 
-# creating default enemy
-e1 = eni()
-#e1.printStats()
-
+#stage one
+print("random bullshit enter ready to enter the dungen")
+input("> ")
 # changing enemy to a slime
 e1.changeMob("slime")
-e1.printStats()
+#start first fight
+clear()
+won = fight(playerone,e1)
+if (won == True):
+    text("\n\n\ncongrats traveler on passing the first trial ")
+    text("but there is always more")
+    time.sleep(20)
+    clear()
 
-#start fight
-print(f" player won = {fight(playerone,e1)}")
-
+#stage two
+print("random bullshit enter stage two")
+e1.changeMob("goblin")
+won = fight(playerone,e1)
+if (won == True):
+    text("\n\n\congrats traveler on passing the second trial ")
+    text("but there is always more")
+input("> ")

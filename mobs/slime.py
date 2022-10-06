@@ -1,6 +1,6 @@
 def slimeInfo():
     mobType = "Slime"
-    Strength = 1
+    Strength = 16
     Health = 4
     speed = -1
     deff = 1
