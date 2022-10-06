@@ -1,68 +1,35 @@
 #implements the game data and logic.
 #import classes.barbarian as barb
-clear = lambda: os.system('cls') # windows
-#clear = lambda: os.system('clear') # mac
+#clear = lambda: os.system('cls') # windows
+clear = lambda: os.system('clear') # mac
 from math import ceil
 from mimetypes import init
 from tabnanny import check
 from webbrowser import get
-import classes.barbarian as barb,classes.wizzard as wiz,os,sys,time
-
-
+import classes.barbarian as barb,classes.wizard as wiz,os,sys,time,player
 textCenterAmount = 80
-global running
+screen_width=112
 
 #--------------------------------------------- main method
+
+
 def text(words):
     for characters in words:
         sys.stdout.write(characters)
         sys.stdout.flush()
-        time.sleep(0.000018)
-screen_width=100
-
-def selectOcupation(selectClass):
+        time.sleep(0.018)
+def selectOcupation():
     global ocupation
-    if selectClass.lower() == "barbarian" or selectClass.lower() == "barb":
-        ocupation = barb.barbarianInfo
-    elif selectClass.lower() == "wizard" or selectClass.lower() == "wiz":
-        ocupation = wiz.wizzardInfo
-def startGame():   
-    answer = "no" 
-    """
-    run this on start to run the game
-    """
-    landingPad()    
-    text("Hello there travaler from another world, I plead you to save our world \n")
-    text("Ohh my where are my manners. Before I continue may I ask for you name travaler \n")
-    global pName
-    pName = input("> ")
-    text("\nThats a wonderful name '") ; text(pName)
-    text("' My name is #### or as some people refer to me as the unknown goddess \n")
-    text("My role is to oversee my world but right now although \n")
-    text("I dont want to admit it but my world has been forcefully taken over by the demon lord \n")
-    text("People live in a horible opresion under the demon lord  \n")
-    text("I wish for my people to be happy, so I summoned you from another world \n")
-    text("Can I count on you in saving the world from demon king ")
-    text(pName) ; text(" ??\n")
-    while(answer.lower() != "yes" ):
-        answer = input("> ")
-    answer = "i agree"
-    text("Thank you so much '") ; text(pName) ; text("' I knew I could count on you!!! \n") 
-    text("Before I summon you \nI must ask you what do type of fighter do best picture yourself as ")
     while(True):
         text("a wizard or a barbarian")
         answer = input("\n > ")
-        if(answer.lower() == "wizard" or answer.lower() == "wiz" or answer.lower() == "barb" or answer.lower() == "barbarian"):
+        if(answer.lower() == "wizard" or answer.lower() == "wiz"):
+            ocupation = wiz.wizzardInfo
             break
-    selectOcupation(answer)
-
-def landingPad():
-    """
-    lobby screen
-    """
-    clear()
-    print("  __       __  __       __   ______         _______   _______    ______  \n /  \     /  |/  \     /  | /      \       /       \ /       \  /      \ \n $$  \   /$$ |$$  \   /$$ |/$$$$$$  |      $$$$$$$  |$$$$$$$  |/$$$$$$  |\n $$$  \ /$$$ |$$$  \ /$$$ |$$ |  $$ |      $$ |__$$ |$$ |__$$ |$$ | _$$/ \n $$$$  /$$$$ |$$$$  /$$$$ |$$ |  $$ |      $$    $$< $$    $$/ $$ |/    |\n $$ $$ $$/$$ |$$ $$ $$/$$ |$$ |  $$ |      $$$$$$$  |$$$$$$$/  $$ |$$$$ |\n $$ |$$$/ $$ |$$ |$$$/ $$ |$$ \__$$ |      $$ |  $$ |$$ |      $$ \__$$ |\n $$ | $/  $$ |$$ | $/  $$ |$$    $$/       $$ |  $$ |$$ |      $$    $$/ \n $$/      $$/ $$/      $$/  $$$$$$/        $$/   $$/ $$/        $$$$$$/  \n                                ")
-startGame()
+        elif(answer.lower() == "barb" or answer.lower() == "barbarian"):
+            ocupation = barb.barbarianInfo
+            break
+selectOcupation()
 class ocupationClass(ocupation):
     def setStrength(self,newStrengthValue):
         self.Strength = newStrengthValue
@@ -89,15 +56,20 @@ class ocupationClass(ocupation):
         return self.speed
     
     def printStats(self):
-        print(f"Name = {pName}".center(textCenterAmount))
+        print(f"Name = {player.getName()}".center(textCenterAmount))
+        
         print("Class = {}".format(self.getclassType()).center(textCenterAmount))
+        time.sleep(0.18)
         print("Str = {}".format(self.getStrength()).center(textCenterAmount))
+        time.sleep(0.18)
         print("Hp = {}".format(self.getHealth()).center(textCenterAmount))
+        time.sleep(0.18)
         print("Dex = {}".format(self.getDexterity()).center(textCenterAmount))
+        time.sleep(0.18)
         print("Int = {}".format(self.getIntelligence()).center(textCenterAmount))
+        time.sleep(0.18)
         print("Speed = {}".format(self.getSpeed()).center(textCenterAmount))
         print("")
-
 class eni():
     def __init__(self) -> None:
             self.mobType = "default"
@@ -135,11 +107,17 @@ class eni():
     def printStats(self):
         print(f"\u001b[36myou currently are fighting a {self.getMobType()} the details are as follows\u001b[0m\n".center(textCenterAmount))
         print("mob clasification = {}".format(self.getMobType()).center(textCenterAmount))
+        
         print("Str = {}".format(self.getStrength()).center(textCenterAmount))
+        time.sleep(0.18)
         print("Hp = {}".format(self.getHealth()).center(textCenterAmount))
+        time.sleep(0.18)
         print("Speed = {}".format(self.getSpeed()).center(textCenterAmount))
+        time.sleep(0.18)
         print("Defense = {}".format(self.getDeff()).center(textCenterAmount))
+        time.sleep(0.18)
         print("Resistance = {}".format(self.getRess()).center(textCenterAmount))
+        
         print("")
     def changeMob(self,newEni):
         if newEni.lower() == "slime":
@@ -268,33 +246,3 @@ def gameEnd():
     text("better luck next time traveler     . . . . . . . . ")
     sys.exit()
 
-# starting ----------------------------------
-clear()
-#init
-playerone = ocupationClass() # creating character class
-playerone.printStats()
-e1 = eni() # creating enemy
-text("wow is this you so butifull so strong sheesh ^^^^\n")
-
-#stage one
-print("random bullshit enter ready to enter the dungen")
-input("> ")
-# changing enemy to a slime
-e1.changeMob("slime")
-#start first fight
-clear()
-won = fight(playerone,e1)
-if (won == True):
-    text("\n\n\ncongrats traveler on passing the first trial ")
-    text("but there is always more")
-    time.sleep(20)
-    clear()
-
-#stage two
-print("random bullshit enter stage two")
-e1.changeMob("goblin")
-won = fight(playerone,e1)
-if (won == True):
-    text("\n\n\congrats traveler on passing the second trial ")
-    text("but there is always more")
-input("> ")
