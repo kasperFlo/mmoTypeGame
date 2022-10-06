@@ -7,7 +7,11 @@ from mimetypes import init
 from tabnanny import check
 from webbrowser import get
 import classes.barbarian as barb,classes.wizzard as wiz,os
-textCenterAmount = 70
+
+
+textCenterAmount = 80
+global running
+#--------------------------------------------- main method
 def selectOcupation(selectClass):
     global ocupation
     if selectClass.lower() == "barbarian" or selectClass.lower() == "barb":
@@ -131,30 +135,30 @@ def youAtk(player, enemy):
     eleDmg = 0
     physDmg = 0
     #base dammage calculations
-    print("\nwhat plan of attack :".center(textCenterAmount))
-    print("(A) cast a spell".center(textCenterAmount))
-    print("(B) charge in and swing".center(textCenterAmount))
+    print("\u001b[32m\nwhat plan of attack :\u001b[0m".center(textCenterAmount))
+    print("\u001b[32m(A) cast a spell\u001b[0m".center(textCenterAmount))
+    print("\u001b[32m(B) charge in and swing\u001b[0m".center(textCenterAmount))
 
     atkType = input("")
 #spell damage calculations
     if(atkType.lower() == "a"):        
-        print("You start charging your Spell ".center(textCenterAmount))
+        print("\u001b[35mYou start charging your Spell \u001b[0m".center(textCenterAmount))
         eleDmg = (player.getStrength() * 0.5) + (player.getIntelligence() * 1) + (player.getDexterity() * 0.8) #spell damage formula 50% str + int + 80% of dex 
         if (eleDmg < 0):  # floor spell damage
             eleDmg = 0.5
         dmgReduction = round(eleDmg * (enemy.getRess()/100),2 )  
 
-        print(f"dmg is reduced by {dmgReduction} because of the targets resistance ".center(textCenterAmount)) 
+        print(f"dmg is \u001b[34mreduced by {dmgReduction} \u001b[0mbecause of the targets resistance ".center(textCenterAmount)) 
         trueDamage = eleDmg - dmgReduction # calculate true dmg check factoring in def / res
 
 # physical damage calculations
     else:               
-        print("You start readying your Sword ".center(textCenterAmount))
+        print("\u001b[35mYou start readying your Sword \u001b[0m".center(textCenterAmount))
         physDmg = ((player.getStrength() * 1) + (player.getDexterity() * 0.8) + (player.getHealth()) * 0.5)   #sword damage formula str + 80% dex + 50% hp
         if (physDmg < 0):  # floor phys dammage
             physDmg = 1
         dmgReduction = round((physDmg * (enemy.getDeff()/100) ),2) 
-        print(f"dmg is reduced by {dmgReduction} because of the defense ".center(textCenterAmount))
+        print(f"dmg is \u001b[34mreduced by {dmgReduction}\u001b[0m because of the defense ".center(textCenterAmount))
         trueDamage = physDmg - dmgReduction  # calculate true dmg check factoring in def / res
 
 # deal dammage to enemy
@@ -162,17 +166,17 @@ def youAtk(player, enemy):
     enemy.setHealth(enemy.getHealth() - trueDamage)
 # check enemy has been defeated
     if(checkAlive(enemy) != True): 
-        if(eleDmg > 0): #spell has been cast
-            print(f"{enemy.getMobType()} has been slain with a mighty spell dealing {trueDamage}dmg".center(textCenterAmount))
+        if(eleDmg > 0): # enemy slain 
+             #spell has been cast
+            print(f"\u001b[35m{enemy.getMobType()} has been slain with a mighty spell dealing {trueDamage}dmg\u001b[0m".center(textCenterAmount))
         else:  #sword has been used
-            print(f"{enemy.getMobType()} has been slain with a sword swing dealing {trueDamage}dmg".center(textCenterAmount))
+            print(f"\u001b[35m{enemy.getMobType()} has been slain with a sword swing dealing {trueDamage}dmg\u001b[0m".center(textCenterAmount))
         return False
-    else:
+    else:  # enemy alive
         if(eleDmg > 0): #spell has been cast
-            print(f"you hit the {enemy.getMobType()} with a spell dealing {trueDamage} dammage leaveing it with {round(enemy.getHealth(),2)} hp".center(textCenterAmount))
+            print(f"you hit the {enemy.getMobType()} with a spell \u001b[32mdealing {trueDamage} damage\u001b[0m leaveing it with {round(enemy.getHealth(),2)} hp".center(textCenterAmount))
         else: #sword has been used
-            print(f"you hit the {enemy.getMobType()} with a sword swing dealing {trueDamage} dammage leaveing it with {round(enemy.getHealth(),2)} hp".center(textCenterAmount))
-
+            print(f"you hit the {enemy.getMobType()} with a sword swing \u001b[32mdealing {trueDamage} damage\u001b[0m leaveing it with {round(enemy.getHealth(),2)} hp".center(textCenterAmount))
     return True
 
 def takeAtk(player, enemy):
@@ -180,36 +184,53 @@ def takeAtk(player, enemy):
 
         enemyDamage = (enemy.getStrength() + enemy.getSpeed()/4)
         player.setHealth(player.getHealth() - enemyDamage)
-        print(f"you take a hit from {enemy.getMobType()} taking {enemyDamage} damage leaving you with {player.getHealth()}hp")
-
-        if(checkAlive(player) != True): 
-            print(f"you have fainted as you have {player.getHealth}hp remaining ")
+        print(f"You take a hit from \u001b[31m{enemy.getMobType()} taking {enemyDamage} damage\u001b[0m leaving you with {player.getHealth()}hp")
+        if(checkAlive(player) != True):  # player fainted
+            print(f"You have fainted as you have {player.getHealth()}HP remaining ")
             return False
-        else:
-            return True
-def fight(player, enemy):
-    running = True
-    print(f"you are fighting a {enemy.getMobType()}".center(textCenterAmount))
+        return True
 
+def fight(player, enemy) -> bool:
+    """
+    returns winner of fight with bool
+    False player lose
+    True player won
+    """
+    running = True
+    print(f"You are engage in combat with a {enemy.getMobType()}".center(textCenterAmount))
+    turn = 1
 
     while (running == True):
-        #clear()
         global trueDamage
+        fightWinner = None
+        #clear()
 # state enimies
-        print(f"{enemy.getMobType()} currently has {round(enemy.getHealth(),2)} hp".center(textCenterAmount))
-        print(f"you currently have {round(player.getHealth(),2)} hp".center(textCenterAmount))
-
+        print(f"{enemy.getMobType()} Currently has \u001b[35m{round(enemy.getHealth(),2)} HP\u001b[0m".center(textCenterAmount))
+        print(f"You currently have \u001b[35m{round(player.getHealth(),2)} HP\u001b[0m".center(textCenterAmount))
+        print(f"\u001b[36mTurn {turn}\u001b[0m\n")
 #speed check
         if (player.getSpeed() >  enemy.getSpeed()): 
-            running = youAtk(player, enemy)
-            running = takeAtk(player, enemy)
-            
-        else:
-            priority = 2
-            running = takeAtk(player, enemy)
-            running = youAtk(player, enemy)
-        input("\n----press enter to continue to next turn----\n".center(textCenterAmount))
 
+            running = youAtk(player, enemy)
+            if running == False:
+                fightWinner = True
+                return fightWinner
+            running = takeAtk(player, enemy)
+            if running == False:
+                fightWinner = False
+                return fightWinner
+        else:
+            #priority = 2
+            running = takeAtk(player, enemy)
+            if running == False:
+                fightWinner = False   
+                return fightWinner
+            running = youAtk(player, enemy)
+            if running == False:
+                fightWinner = True
+                return fightWinner
+        input(u"\u001b[36m\n----press enter to continue to next turn----\n\u001b[0m".center(textCenterAmount))
+        turn += 1   
 
 # starting ----------------------------------
 
@@ -227,5 +248,5 @@ e1.changeMob("slime")
 e1.printStats()
 
 #start fight
-fight(playerone,e1)
+print(f" player won = {fight(playerone,e1)}")
 
