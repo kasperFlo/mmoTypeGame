@@ -12,7 +12,7 @@ def text(words):
     for characters in words:
         sys.stdout.write(characters)
         sys.stdout.flush()
-        time.sleep(0.018)
+        time.sleep(0.0)
 
 
 def startGame():   

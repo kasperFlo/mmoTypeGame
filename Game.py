@@ -24,7 +24,7 @@ def selectOcupation():
         text("a wizard or a barbarian")
         answer = input("\n > ")
         if(answer.lower() == "wizard" or answer.lower() == "wiz"):
-            ocupation = wiz.wizzardInfo
+            ocupation = wiz.wizardInfo
             break
         elif(answer.lower() == "barb" or answer.lower() == "barbarian"):
             ocupation = barb.barbarianInfo
@@ -222,6 +222,7 @@ def fight(player, enemy) -> bool:
 #speed check
         if (player.getSpeed() >  enemy.getSpeed()): 
             #priority move
+            type(f"you move fast on your feet getting the first move")
             running = youAtk(player, enemy)
             if running == False:
                 fightWinner = True
@@ -231,6 +232,7 @@ def fight(player, enemy) -> bool:
                 gameEnd()
         else:
             #priority second
+            type(f"your opponent moves faster getting the first move")
             running = takeAtk(player, enemy)
             if running == False:
                 gameEnd()   
@@ -246,3 +248,16 @@ def gameEnd():
     text("better luck next time traveler     . . . . . . . . ")
     sys.exit()
 
+def gamblingHouse():
+    type(f"would you like to wager some or your strength for a chance for greater strenght hero")
+    victim = input("")
+    if (victim.lower().strip() == "yes" or victim.lower().strip() == "y"): 
+        type("you enter shady ally site")
+        type("he askes you, what part of you would you like to wager")
+        type("(str)(hp)(dex)(int)(speed)")
+        wager = str
+
+
+    else:
+        type("very well then good day to you")
+        return
