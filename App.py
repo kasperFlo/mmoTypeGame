@@ -1,8 +1,7 @@
 # implements the interactivity with the user.
 global running
 textCenterAmount = 80
-ocupation = 0
-from operator import imod
+ocupation = None
 import sys,time,player,os
 #clear = lambda: os.system('cls') # windows
 clear = lambda: os.system('clear') # mac
@@ -43,20 +42,21 @@ def startGame():
 startGame()
 import Game as g
 
-time.sleep(5)
+player.waitingScreen("\nstarting",0.8)
 # ---- starting game ----
 
 g.clear()
 #init
 playerone = g.ocupationClass() # creating character class
 e1 = g.eni() # creating enemy
+"""
 playerone.printStats()
 text("wow is this you so butifull so strong sheeeeeeeeeeeeesh ^^^^\n".center(textCenterAmount))
 
 #stage one
 print("random bullshit enter ready to enter the dungen".center(textCenterAmount))
 input("---press enter to continue---".center(textCenterAmount))
-time.sleep(2)
+player.waitingScreen("",0.8)
 # changing enemy to a slime
 e1.changeMob("slime")
 
@@ -66,14 +66,17 @@ won = g.fight(playerone,e1)
 if (won == True):
     text("\n\n\ncongrats traveler on passing the first trial ")
     text("but there is still more")
+player.waitingScreen("",1)
     # loading/waiting screen 
+"""
 
-
-
-g.gamblingHouse()
+clear()    
+playerone.printStats()
+g.gamblingHouse(playerone.getStrength(),playerone.getHealth(),playerone.getDexterity(),playerone.getIntelligence(),playerone.getSpeed())
 
 #stage two
-print("random lore dump enter stage / trial two")
+clear()
+text("random lore dump enter stage / trial two blah blah blahcblah blah blahcblah blah blahc\n")
 e1.changeMob("goblin")
 won = g.fight(playerone,e1)
 if (won == True):
