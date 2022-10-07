@@ -207,7 +207,7 @@ def fight(player, enemy) -> bool:
     True player won
     """
     running = True
-    print(f"You are engage in combat with a {enemy.getMobType()}".center(textCenterAmount))
+    print(f"You are engage in combat with a {enemy.getMobType()}")
     turn = 1
 
     while (running == True):
@@ -249,43 +249,50 @@ def gameEnd():
     text("better luck next time traveler     . . . . . . . . ")
     sys.exit()
 
-def properWager(wagerTypeInp,wagerAmount):
+def properWager(wagerTypeInp,wagerAmount,stre,hp,dex,intl,speed):
     if(wagerTypeInp == "str"):
-        if(wagerAmount >= player.getSpeed()):
+        if(wagerAmount <= stre and wagerAmount > 0) :
             return True
     elif(wagerTypeInp == "hp"):
-            if (wagerAmount >= player.getSpeed()):
+            if (wagerAmount >= hp) and wagerAmount > 0:
                 return True
     elif(wagerTypeInp == "dex"):
-        if(wagerAmount >= player.getSpeed()):
+        if(wagerAmount <= dex and wagerAmount > 0): 
             return True
     elif(wagerTypeInp == "int"):
-        if(wagerAmount >= player.getSpeed()):
+        if(wagerAmount <= intl and wagerAmount > 0):
             return True
     elif(wagerTypeInp == "speed"):
-        if(wagerAmount >= player.getSpeed()):
+        if(wagerAmount <= speed and wagerAmount > 0 ):
             return True
     else:
         return False
-
-def gamblingHouse():
-    type(f"would you like to wager some or your strength for a chance for greater strenght hero")
-    victim = input("")
+def gamblingHouse(stre,hp,dex,intl,speed):
+    running = True
+    text(f"would you like to wager some or your strength for a chance for greater strenght hero? (yes or no)\n")
+    victim = input("> ")
     if (victim.lower().strip() == "yes" or victim.lower().strip() == "y"): 
-        type("you enter shady ally site".center(textCenterAmount))
-        type("he askes you,".center(textCenterAmount))
-        while(running):
-            type("what part of you would you like to wager".center(textCenterAmount))
-            type("(str)(hp)(dex)(int)(speed)".center(textCenterAmount))
-            wagerType = input("> ")
-            type("how much of this stat would you like to wager of this stat".center(textCenterAmount))
-            wagerTypeAmount = input("> ".center(textCenterAmount))
-            if(properWager(wagerType,wagerTypeAmount)):
+        text("this shady individual asks you ")
+        while(running == True):
+            text("what part of you would you like to wager ")
+            text("(str)(hp)(dex)(int)(speed)\n")
+            while(True):
+                wagerType = str(input("> "))
+                if (wagerType != "str" and wagerType != "hp" and wagerType != "dex" and wagerType != "int" and wagerType != "speed" ):
+                    print("pick an actual stat that you have")
+                else:
+                    break
+            text("how much of this stat would you like to wager?\n")
+            wagerTypeAmount = float(input("> "))
+            if(properWager(wagerType,wagerTypeAmount,stre,hp,dex,intl,speed)):
                 break
             else:
-                running = False
-                type(f"you do not have enough {wagerType} stats to wager".center(textCenterAmount))
-                type("the shady man asks you again".center(textCenterAmount))
-            type(f"the house says they can match your wager of {wagerTypeAmount} {wagerType} stat points")
+                text(f"you do not have enough {wagerType} stats to wager\n")
+                text("the shady man asks you again\n\n\n")
+
+        text(f"the house says they can match your wager of {wagerTypeAmount} {wagerType} stat points\n")
+        player.waitingScreen("pleasure doing business with you o7",1)
+
     else: # says no to gambling
-        type("very well then good day to you")
+        text("very well then good day to you\n")
+        player.waitingScreen("loading next stage",0.8)
