@@ -66,8 +66,11 @@ won = g.fight(playerone,e1)
 if (won == True):
     text("\n\n\ncongrats traveler on passing the first trial ")
     text("but there is still more")
-    g.time.sleep(6)
-    g.clear()
+    # loading/waiting screen 
+
+
+
+g.gamblingHouse()
 
 #stage two
 print("random lore dump enter stage / trial two")

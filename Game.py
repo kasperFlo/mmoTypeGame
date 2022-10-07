@@ -4,6 +4,7 @@
 clear = lambda: os.system('clear') # mac
 from math import ceil
 from mimetypes import init
+from operator import truediv
 from tabnanny import check
 from webbrowser import get
 import classes.barbarian as barb,classes.wizard as wiz,os,sys,time,player
@@ -248,16 +249,43 @@ def gameEnd():
     text("better luck next time traveler     . . . . . . . . ")
     sys.exit()
 
+def properWager(wagerTypeInp,wagerAmount):
+    if(wagerTypeInp == "str"):
+        if(wagerAmount >= player.getSpeed()):
+            return True
+    elif(wagerTypeInp == "hp"):
+            if (wagerAmount >= player.getSpeed()):
+                return True
+    elif(wagerTypeInp == "dex"):
+        if(wagerAmount >= player.getSpeed()):
+            return True
+    elif(wagerTypeInp == "int"):
+        if(wagerAmount >= player.getSpeed()):
+            return True
+    elif(wagerTypeInp == "speed"):
+        if(wagerAmount >= player.getSpeed()):
+            return True
+    else:
+        return False
+
 def gamblingHouse():
     type(f"would you like to wager some or your strength for a chance for greater strenght hero")
     victim = input("")
     if (victim.lower().strip() == "yes" or victim.lower().strip() == "y"): 
-        type("you enter shady ally site")
-        type("he askes you, what part of you would you like to wager")
-        type("(str)(hp)(dex)(int)(speed)")
-        wager = str
-
-
-    else:
+        type("you enter shady ally site".center(textCenterAmount))
+        type("he askes you,".center(textCenterAmount))
+        while(running):
+            type("what part of you would you like to wager".center(textCenterAmount))
+            type("(str)(hp)(dex)(int)(speed)".center(textCenterAmount))
+            wagerType = input("> ")
+            type("how much of this stat would you like to wager of this stat".center(textCenterAmount))
+            wagerTypeAmount = input("> ".center(textCenterAmount))
+            if(properWager(wagerType,wagerTypeAmount)):
+                break
+            else:
+                running = False
+                type(f"you do not have enough {wagerType} stats to wager".center(textCenterAmount))
+                type("the shady man asks you again".center(textCenterAmount))
+            type(f"the house says they can match your wager of {wagerTypeAmount} {wagerType} stat points")
+    else: # says no to gambling
         type("very well then good day to you")
-        return
