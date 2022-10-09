@@ -11,7 +11,7 @@ def text(words):
     for characters in words:
         sys.stdout.write(characters)
         sys.stdout.flush()
-        time.sleep(0.0)
+        time.sleep(0.000018)
 
 
 def startGame():   
@@ -49,7 +49,7 @@ g.clear()
 #init
 playerone = g.ocupationClass() # creating character class
 e1 = g.eni() # creating enemy
-"""
+
 playerone.printStats()
 text("wow is this you so butifull so strong sheeeeeeeeeeeeesh ^^^^\n".center(textCenterAmount))
 
@@ -68,11 +68,30 @@ if (won == True):
     text("but there is still more")
 player.waitingScreen("",1)
     # loading/waiting screen 
-"""
 
 clear()    
 playerone.printStats()
-g.gamblingHouse(playerone.getStrength(),playerone.getHealth(),playerone.getDexterity(),playerone.getIntelligence(),playerone.getSpeed())
+x = g.gamblingHouse(playerone.getStrength(),playerone.getHealth(),playerone.getDexterity(),playerone.getIntelligence(),playerone.getSpeed())
+if (x[0] == "str"):
+    playerone.setStrength(playerone.getStrength()+ x[1])
+    text("your new stats are as follows") : playerone.printStats()
+elif (x[0] == "hp"):
+    text(f"{x[0]} +{x[1] }")
+    playerone.setHealth(playerone.getHealth()+ x[1])
+    text("your new stats are as follows") : playerone.printStats()
+    text(f"{x[0]} +{x[1] }")
+elif (x[0] == "dex"):
+    playerone.setDexterity(playerone.getsetDexterity()+x[1])
+    text("your new stats are as follows") : playerone.printStats()
+    text(f"{x[0]} +{x[1] }")
+elif (x[0] == "int"):
+    playerone.setIntelligence(playerone.getIntelligence()+ x[1])
+    text("your new stats are as follows") : playerone.printStats()
+    text(f"{x[0]} +{x[1] }")
+elif (x[0] == "speed"):
+    playerone.setSpeed(playerone.getSpeed()+ x[1])
+    text("your new stats are as follows") : playerone.printStats()
+    text(f"{x[0]} +{x[1] }")
 
 #stage two
 clear()

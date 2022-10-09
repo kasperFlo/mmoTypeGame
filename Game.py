@@ -2,7 +2,6 @@
 #import classes.barbarian as barb
 #clear = lambda: os.system('cls') # windows
 clear = lambda: os.system('clear') # mac
-from math import ceil
 from mimetypes import init
 from operator import truediv
 from tabnanny import check
@@ -10,7 +9,7 @@ from webbrowser import get
 import classes.barbarian as barb,classes.wizard as wiz,os,sys,time,player
 textCenterAmount = 80
 screen_width=112
-
+from random import randint
 #--------------------------------------------- main method
 
 
@@ -289,9 +288,22 @@ def gamblingHouse(stre,hp,dex,intl,speed):
             else:
                 text(f"you do not have enough {wagerType} stats to wager\n")
                 text("the shady man asks you again\n\n\n")
+        #actual betting
+        text(f"the house says they can double your wager puting {wagerTypeAmount*2} {wagerType} stat points on the table\n")
+        text(f"he tells you to roll a six sided dice, the dealer decides for you to win the wager you must roll a number higher then four")
+        text(f"you take the dice in your hand clinching your fist, and just like that you rolled the dice")
+        player.waitingScreen("rolling",0.7)
+        roll = randint(1,6)
+        text(f"you rolled a {roll}")
+        if (roll > 4): 
+            text(f"congrats on the winning the wager. im a man of my word il keep my end of the deal here you go {wagerTypeAmount*2} {wagerType} stat points")
+            player.waitingScreen("pleasure doing business with you sir I hope to see you around again",1)
+            return wagerType,(wagerTypeAmount*2)
+        else:
+            text(f"unlucky on your end unfortunatly I must be taking {wagerTypeAmount} {wagerType} from you")
+            player.waitingScreen("pleasure doing business with you sir I hope to see you around again ",1)
+            return wagerType,(wagerTypeAmount*-1)
 
-        text(f"the house says they can match your wager of {wagerTypeAmount} {wagerType} stat points\n")
-        player.waitingScreen("pleasure doing business with you o7",1)
 
     else: # says no to gambling
         text("very well then good day to you\n")
