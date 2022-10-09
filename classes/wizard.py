@@ -4,5 +4,5 @@ class wizardInfo():
         self.Strength = -2
         self.Health = 4
         self.Dexterity = 1 
-        self.Intelligence = 5
+        self.Intelligence = 55
         self.speed = 1

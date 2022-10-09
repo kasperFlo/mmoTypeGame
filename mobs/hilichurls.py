@@ -1,5 +1,5 @@
-def goblinInfo():
-    mobType = "Goblin"
+def hilichurlsInfo():
+    mobType = "Hilichurl"
     Strength = 2
     Health = 4
     speed = 2

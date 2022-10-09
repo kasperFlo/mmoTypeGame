@@ -1,7 +1,7 @@
 #implements the game data and logic.
 #import classes.barbarian as barb
-#clear = lambda: os.system('cls') # windows
-clear = lambda: os.system('clear') # mac
+clear = lambda: os.system('cls') # windows
+#clear = lambda: os.system('clear') # mac
 from mimetypes import init
 from operator import truediv
 from tabnanny import check
@@ -21,7 +21,7 @@ def text(words):
 def selectOcupation():
     global ocupation
     while(True):
-        text("a wizard or a barbarian")
+        text("what do type of fighter do best picture yourself as (wizzard) (barbarian)")
         answer = input("\n > ")
         if(answer.lower() == "wizard" or answer.lower() == "wiz"):
             ocupation = wiz.wizardInfo
@@ -105,7 +105,7 @@ class eni():
     def setRess(self,newRessValue):# resistance 
         self.Ress = newRessValue    
     def printStats(self):
-        print(f"\u001b[36myou currently are fighting a {self.getMobType()} the details are as follows\u001b[0m\n".center(textCenterAmount))
+        print(f"\u001b[36myou currently are fighting a {self.getMobType()} the details are as follows\u001b[0m\n")
         print("mob clasification = {}".format(self.getMobType()).center(textCenterAmount))
         
         print("Str = {}".format(self.getStrength()).center(textCenterAmount))
@@ -123,10 +123,17 @@ class eni():
         if newEni.lower() == "slime":
             import mobs.slime as slime
             cc = slime.slimeInfo()
-        elif newEni.lower() == "goblin":
-            import mobs.goblin as goblin
-            cc = goblin.goblinInfo()
-        #print(f"mob returned stats are {cc}\n".center(textCenterAmount)) # test return value
+        elif newEni.lower() == "hilichurls":
+            import mobs.hilichurls as hilichurls
+            cc = hilichurls.hilichurlsInfo()
+        elif newEni.lower() == "maguu_kenki":
+            import mobs.maguu_kenki as maguu_kenki
+            cc = maguu_kenki.maguu_kenkiInfo()
+        elif newEni.lower() == "demonlord":
+            import mobs.demonLord as demonLord
+            cc = demonLord.demonLordInfo()
+
+        #print(f"mob returned stats are {cc}\n".center(textCenterAmount)) # test return valueGame.py
         self.setMobType(cc[0])
         self.setStrength(cc[1])
         self.setHealth(cc[2])
@@ -214,8 +221,8 @@ def fight(player, enemy) -> bool:
         fightWinner = None
         #clear()
 # state enimies
-        print(f"{enemy.getMobType()} Currently has \u001b[35m{round(enemy.getHealth(),2)} HP\u001b[0m".center(textCenterAmount))
-        print(f"You currently have \u001b[35m{round(player.getHealth(),2)} HP\u001b[0m".center(textCenterAmount))
+        print(f"{enemy.getMobType()} currently \u001b[35m has {round(enemy.getHealth(),2)} HP\u001b[0m".center(textCenterAmount))
+        print(f"You currently\u001b[35m have {round(player.getHealth(),2)} HP\u001b[0m".center(textCenterAmount))
         print(f"\u001b[36mTurn {turn}\u001b[0m\n")
         player.printStats()
         enemy.printStats()
@@ -268,7 +275,8 @@ def properWager(wagerTypeInp,wagerAmount,stre,hp,dex,intl,speed):
         return False
 def gamblingHouse(stre,hp,dex,intl,speed):
     running = True
-    text(f"would you like to wager some or your strength for a chance for greater strenght hero? (yes or no)\n")
+    text(f"on the way u you see a shady looking individual, he spots you and asks")
+    text(f"would you like to wager some or your strength for a chance for greater strength hero? (yes or no)\n")
     victim = input("> ")
     if (victim.lower().strip() == "yes" or victim.lower().strip() == "y"): 
         text("this shady individual asks you ")
@@ -290,21 +298,22 @@ def gamblingHouse(stre,hp,dex,intl,speed):
                 text("the shady man asks you again\n\n\n")
         #actual betting
         text(f"the house says they can double your wager puting {wagerTypeAmount*2} {wagerType} stat points on the table\n")
-        text(f"he tells you to roll a six sided dice, the dealer decides for you to win the wager you must roll a number higher then four")
-        text(f"you take the dice in your hand clinching your fist, and just like that you rolled the dice")
-        player.waitingScreen("rolling",0.7)
+        text(f"he tells you to roll a six sided dice, the dealer decides for you to win the wager you must roll a number higher then four\n")
+        text(f"you take the dice in your hand clinching your fist, and just like that you rolled the dice\n")
+        player.waitingScreen(" rolling",0.7)
         roll = randint(1,6)
         text(f"you rolled a {roll}")
         if (roll > 4): 
-            text(f"congrats on the winning the wager. im a man of my word il keep my end of the deal here you go {wagerTypeAmount*2} {wagerType} stat points")
-            player.waitingScreen("pleasure doing business with you sir I hope to see you around again",1)
+            text(f"congrats on the winning the wager. im a man of my word il keep my end of the deal here you go {wagerTypeAmount*2} {wagerType} stat points\n")
+            player.waitingScreen("pleasure doing business with you sir I hope to see you around again ",1)
             return wagerType,(wagerTypeAmount*2)
         else:
-            text(f"unlucky on your end unfortunatly I must be taking {wagerTypeAmount} {wagerType} from you")
-            player.waitingScreen("pleasure doing business with you sir I hope to see you around again ",1)
+            text(f"unlucky on your end unfortunatly I must be taking {wagerTypeAmount} {wagerType} from you\n")
+            player.waitingScreen("pleasure doing business with you sir I hope to see you around again \n",1)
             return wagerType,(wagerTypeAmount*-1)
 
 
     else: # says no to gambling
         text("very well then good day to you\n")
         player.waitingScreen("loading next stage",0.8)
+        return "nothing" , 0
