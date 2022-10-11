@@ -1,7 +1,7 @@
 #implements the game data and logic.
 #import classes.barbarian as barb
-clear = lambda: os.system('cls') # windows
-#clear = lambda: os.system('clear') # mac
+#clear = lambda: os.system('cls') # windows
+clear = lambda: os.system('clear') # mac
 from mimetypes import init
 from operator import truediv
 from tabnanny import check
@@ -17,7 +17,7 @@ def text(words):
     for characters in words:
         sys.stdout.write(characters)
         sys.stdout.flush()
-        time.sleep(0.018)
+        time.sleep(0.00000000000008)
 def selectOcupation():
     global ocupation
     while(True):
@@ -56,6 +56,9 @@ class ocupationClass(ocupation):
         return self.speed
     
     def printStats(self):
+
+        print('\033[94m')
+
         print(f"Name = {player.getName()}".center(textCenterAmount))
         
         print("Class = {}".format(self.getclassType()).center(textCenterAmount))
@@ -69,7 +72,8 @@ class ocupationClass(ocupation):
         print("Int = {}".format(self.getIntelligence()).center(textCenterAmount))
         time.sleep(0.18)
         print("Speed = {}".format(self.getSpeed()).center(textCenterAmount))
-        print("")
+
+        print('\u001b[0m')
 class eni():
     def __init__(self) -> None:
             self.mobType = "default"
@@ -106,18 +110,19 @@ class eni():
         self.Ress = newRessValue    
     def printStats(self):
         print(f"\u001b[36myou currently are fighting a {self.getMobType()} the details are as follows\u001b[0m\n")
+        print('\033[93m')    
         print("mob clasification = {}".format(self.getMobType()).center(textCenterAmount))
         
         print("Str = {}".format(self.getStrength()).center(textCenterAmount))
         time.sleep(0.18)
-        print("Hp = {}".format(self.getHealth()).center(textCenterAmount))
+        print("Hp = {}".format(round(self.getHealth(),2)).center(textCenterAmount))
         time.sleep(0.18)
         print("Speed = {}".format(self.getSpeed()).center(textCenterAmount))
         time.sleep(0.18)
         print("Defense = {}".format(self.getDeff()).center(textCenterAmount))
         time.sleep(0.18)
         print("Resistance = {}".format(self.getRess()).center(textCenterAmount))
-        
+        print('\033[0m')
         print("")
     def changeMob(self,newEni):
         if newEni.lower() == "slime":
@@ -275,6 +280,7 @@ def properWager(wagerTypeInp,wagerAmount,stre,hp,dex,intl,speed):
         return False
 def gamblingHouse(stre,hp,dex,intl,speed):
     running = True
+
     text(f"on the way u you see a shady looking individual, he spots you and asks")
     text(f"would you like to wager some or your strength for a chance for greater strength hero? (yes or no)\n")
     victim = input("> ")
@@ -302,9 +308,9 @@ def gamblingHouse(stre,hp,dex,intl,speed):
         text(f"you take the dice in your hand clinching your fist, and just like that you rolled the dice\n")
         player.waitingScreen(" rolling",0.7)
         roll = randint(1,6)
-        text(f"you rolled a {roll}")
-        if (roll > 4): 
-            text(f"congrats on the winning the wager. im a man of my word il keep my end of the deal here you go {wagerTypeAmount*2} {wagerType} stat points\n")
+        text(f"\nyou rolled a {roll} ")
+        if (roll > -1): 
+            text(f"congrats on the winning the wager. Im a man of my word il keep my end of the deal here you go {wagerTypeAmount*2} {wagerType} stat points\n")
             player.waitingScreen("pleasure doing business with you sir I hope to see you around again ",1)
             return wagerType,(wagerTypeAmount*2)
         else:
@@ -315,5 +321,4 @@ def gamblingHouse(stre,hp,dex,intl,speed):
 
     else: # says no to gambling
         text("very well then good day to you\n")
-        player.waitingScreen("loading next stage",0.8)
         return "nothing" , 0

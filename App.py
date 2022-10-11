@@ -3,14 +3,14 @@ global running
 textCenterAmount = 80
 ocupation = None
 import sys,time,player,os
-clear = lambda: os.system('cls') # windows
-#clear = lambda: os.system('clear') # mac
+#clear = lambda: os.system('cls') # windows
+clear = lambda: os.system('clear') # mac
 screen_width=112
 def text(words):
     for characters in words:
         sys.stdout.write(characters)
         sys.stdout.flush()
-        time.sleep(0.0000)
+        time.sleep(0.00000000000008)
 def startGame():   
     answer = "" 
     global pName
@@ -20,7 +20,7 @@ def startGame():
     text(f"Ohh my where are my manners. Before I continue may I ask for you name travaler \n")
     pName = input("> ")
     player.setName(pName)
-    text(f"That's a wonderful name {pName} My name is #### or as some people like to refer to me as the unknown goddess. My role is to oversee my world but right now although don't want to admit it but my world has been forcefully taken over by the demon lord People live in a horrible oppression under the demon lord wish for my people to be happy, so I summoned you from another world Can I count on you in saving the world from demon king '{pName}'??")
+    text(f"That's a wonderful name {pName} My name is #### or as some people like to refer to me as the unknown goddess. My role is to oversee my world but right now although don't want to admit it but my world has been forcefully taken over by the demon lord People live in a horrible oppression under the demon lord wish for my people to be happy, so I summoned you from another world Can I count on you in saving the world from demon king '{pName}'?? (yes)")
     while(answer.lower() != "yes" ):
         answer = input("\n> ")
     text(f"Thank you so much {pName} I knew I could count on you!!! \n") 
@@ -46,7 +46,7 @@ input("---press enter to continue---".center(textCenterAmount))
 #entrence to dungen
 g.clear()
 text(f"As you wander away from where the goddess entered you into the world you spot the humongous tower that you assumed to be the demon lords tower you enter through the out of place regular looking door. You gather your strength and resolve and start to ascend the tower\n")
-input("---press enter to continue---".center(textCenterAmount))
+input("\n---press enter to continue---".center(textCenterAmount))
 
 
 #start first fight ------------------------
@@ -54,11 +54,10 @@ input("---press enter to continue---".center(textCenterAmount))
 text("on the way up the tower you are stoped by a slime which blocks your way up , you steel your self for a fight\n")
 e1.changeMob("slime") # set enemy to a slime
 clear()
-won = g.fight(playerone,e1)
+g.fight(playerone,e1)
 
-text("\n\n\ncongrats traveler on passing the first trial ")
-text("but there is still more")
-player.waitingScreen("loading ",1)
+text("\n\n\ncongrats traveler on passing the first trial but there is still more")
+player.waitingScreen(" loading ",1)
     # loading/waiting screen 
 
 clear()   # chance to increse stats using dice  
@@ -66,7 +65,7 @@ playerone.printStats()
 x = g.gamblingHouse(playerone.getStrength(),playerone.getHealth(),playerone.getDexterity(),playerone.getIntelligence(),playerone.getSpeed())
 if (x[0] == "str"):
     playerone.setStrength(playerone.getStrength()+ x[1])
-    text("your new stats are as follows") 
+    text("\nyour new stats are as follows ") 
     playerone.printStats()
 elif (x[0] == "hp"):
     text(f"{x[0]} +{x[1] }")
@@ -91,13 +90,16 @@ elif (x[0] == "speed"):
     text(f"{x[0]} +{x[1] }")
 else:
     pass
-player.waitingScreen("loading ",1)
-
+x = "nothing",0
+player.waitingScreen(" loading ",1)
 #stage two ------------------------
 clear()
 text("you pass by the defeated slime and move up the winding stair case catching your breath as you go. \n you keep moving forward untill a hilichurl blocks the path forward\n")
 e1.changeMob("hilichurls")
-won = g.fight(playerone,e1)
+g.fight(playerone,e1)
+clear()   # chance to increse stats using dice  
+playerone.printStats()
+x = g.gamblingHouse(playerone.getStrength(),playerone.getHealth(),playerone.getDexterity(),playerone.getIntelligence(),playerone.getSpeed())
 text("\n\ncongrats traveler on passing the second trial ")
 text("but there is always more")
 if (x[0] == "str"):
@@ -127,14 +129,19 @@ elif (x[0] == "speed"):
     text(f"{x[0]} +{x[1] }")
 else:
     pass
-player.waitingScreen("loading ",1)
+x = "nothing",0
+player.waitingScreen(" loading ",1)
 
 #stage three ------------------------
 clear()
 text("after the hard fight with the hilichurl, it lays in front of you defeated you see hes droped an ruby amulet you decide to pick it up. you feel a surge of energy within you (+5 hp) ")
 playerone.setHealth(playerone.getHealth()+5)
 e1.changeMob("maguu_kenki")
-won = g.fight(playerone,e1)
+g.fight(playerone,e1)
+clear()   # chance to increse stats using dice  
+playerone.printStats()
+x = g.gamblingHouse(playerone.getStrength(),playerone.getHealth(),playerone.getDexterity(),playerone.getIntelligence(),playerone.getSpeed())
+print(x)
 text("\n\ncongrats traveler on passing the second trial ")
 text("but there is always more")
 if (x[0] == "str"):
@@ -164,13 +171,14 @@ elif (x[0] == "speed"):
     text(f"{x[0]} +{x[1] }")
 else:
     pass
-player.waitingScreen("loading ",1)
+x = "nothing",0
+player.waitingScreen(" loading ",1)
 
 #stage three ------------------------
 clear()
 text("you pass by the defeated maguu kenki and move up the winding stair case catching your breath as you go. \n you keep moving forward untill you reach the top and only the demon lord stands infront of you \n")
 e1.changeMob("demonlord")
-won = g.fight(playerone,e1)
+g.fight(playerone,e1)
 text("\n\ncongrats traveler on defeating the demon lord ")
 text("but there is this really the end")
 input("> .................. till next time")
