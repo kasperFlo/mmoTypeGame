@@ -3,15 +3,23 @@ global running
 textCenterAmount = 80
 ocupation = None
 import sys,time,player,os
-#clear = lambda: os.system('cls') # windows
-clear = lambda: os.system('clear') # mac
+clear = lambda: os.system('cls') # windows
+#clear = lambda: os.system('clear') # mac
 screen_width=112
 def text(words):
+    '''  
+    rolling text
+    '''  
+
     for characters in words:
         sys.stdout.write(characters)
         sys.stdout.flush()
-        time.sleep(0.00000000000008)
-def startGame():   
+        time.sleep(0.0018)
+def startGame(): 
+    '''  
+    starting screen with logo and begining text
+    '''  
+
     answer = "" 
     global pName
     clear()
@@ -25,12 +33,43 @@ def startGame():
         answer = input("\n> ")
     text(f"Thank you so much {pName} I knew I could count on you!!! \n") 
     text(f"Before I summon you I must ask you ")
-    
+def adjustStat(x):
+    '''
+    used in combination with the "gamblingHouse" function to adjust the players stats by what they won or lost there
+    '''
+    if (x[0] == "str"): # checks what stat got changed and ajusts it by the returned value
+        playerone.setStrength(playerone.getStrength()+ x[1])
+        text("\nyour new stats are as follows ") 
+        playerone.printStats()
+    elif (x[0] == "hp"):
+        text(f"{x[0]} +{x[1] }")
+        playerone.setHealth(playerone.getHealth()+ x[1])
+        text("your new stats are as follows")
+        playerone.printStats()
+        text(f"{x[0]} +{x[1] }")
+    elif (x[0] == "dex"):
+        playerone.setDexterity(playerone.getDexterity()+x[1])
+        text("your new stats are as follows")
+        playerone.printStats()
+        text(f"{x[0]} +{x[1] }")
+    elif (x[0] == "int"):
+        playerone.setIntelligence(playerone.getIntelligence()+ x[1])
+        text("your new stats are as follows")
+        playerone.printStats()
+        text(f"{x[0]} +{x[1] }")
+    elif (x[0] == "speed"):
+        playerone.setSpeed(playerone.getSpeed()+ x[1])
+        text("your new stats are as follows")
+        playerone.printStats()
+        text(f"{x[0]} +{x[1] }")
+    else:
+        pass
+
+
+#init 
 startGame()
 import Game as g
 clear()
-
-#init 
 g.clear()
 playerone = g.ocupationClass() # creating character class
 e1 = g.eni() # creating enemy
@@ -50,46 +89,17 @@ input("\n---press enter to continue---".center(textCenterAmount))
 
 
 #start first fight ------------------------
-
 text("on the way up the tower you are stoped by a slime which blocks your way up , you steel your self for a fight\n")
 e1.changeMob("slime") # set enemy to a slime
 clear()
 g.fight(playerone,e1)
-
 text("\n\n\ncongrats traveler on passing the first trial but there is still more")
 player.waitingScreen(" loading ",1)
-    # loading/waiting screen 
-
-clear()   # chance to increse stats using dice  
+# merchant encunter --------------------------
+clear()   
 playerone.printStats()
-x = g.gamblingHouse(playerone.getStrength(),playerone.getHealth(),playerone.getDexterity(),playerone.getIntelligence(),playerone.getSpeed())
-if (x[0] == "str"):
-    playerone.setStrength(playerone.getStrength()+ x[1])
-    text("\nyour new stats are as follows ") 
-    playerone.printStats()
-elif (x[0] == "hp"):
-    text(f"{x[0]} +{x[1] }")
-    playerone.setHealth(playerone.getHealth()+ x[1])
-    text("your new stats are as follows")
-    playerone.printStats()
-    text(f"{x[0]} +{x[1] }")
-elif (x[0] == "dex"):
-    playerone.setDexterity(playerone.getDexterity()+x[1])
-    text("your new stats are as follows")
-    playerone.printStats()
-    text(f"{x[0]} +{x[1] }")
-elif (x[0] == "int"):
-    playerone.setIntelligence(playerone.getIntelligence()+ x[1])
-    text("your new stats are as follows")
-    playerone.printStats()
-    text(f"{x[0]} +{x[1] }")
-elif (x[0] == "speed"):
-    playerone.setSpeed(playerone.getSpeed()+ x[1])
-    text("your new stats are as follows")
-    playerone.printStats()
-    text(f"{x[0]} +{x[1] }")
-else:
-    pass
+x = g.gamblingHouse(playerone.getStrength(),playerone.getHealth(),playerone.getDexterity(),playerone.getIntelligence(),playerone.getSpeed())# chance to increse stats using dice  
+adjustStat(x) 
 x = "nothing",0
 player.waitingScreen(" loading ",1)
 #stage two ------------------------
@@ -97,38 +107,14 @@ clear()
 text("you pass by the defeated slime and move up the winding stair case catching your breath as you go. \n you keep moving forward untill a hilichurl blocks the path forward\n")
 e1.changeMob("hilichurls")
 g.fight(playerone,e1)
-clear()   # chance to increse stats using dice  
+text("\n\ncongrats traveler on passing the second trial but there is always more")
+
+# merchant encunter --------------------------
+clear()   
 playerone.printStats()
-x = g.gamblingHouse(playerone.getStrength(),playerone.getHealth(),playerone.getDexterity(),playerone.getIntelligence(),playerone.getSpeed())
-text("\n\ncongrats traveler on passing the second trial ")
-text("but there is always more")
-if (x[0] == "str"):
-    playerone.setStrength(playerone.getStrength()+ x[1])
-    text("your new stats are as follows") 
-    playerone.printStats()
-elif (x[0] == "hp"):
-    text(f"{x[0]} +{x[1] }")
-    playerone.setHealth(playerone.getHealth()+ x[1])
-    text("your new stats are as follows")
-    playerone.printStats()
-    text(f"{x[0]} +{x[1] }")
-elif (x[0] == "dex"):
-    playerone.setDexterity(playerone.getDexterity()+x[1])
-    text("your new stats are as follows")
-    playerone.printStats()
-    text(f"{x[0]} +{x[1] }")
-elif (x[0] == "int"):
-    playerone.setIntelligence(playerone.getIntelligence()+ x[1])
-    text("your new stats are as follows")
-    playerone.printStats()
-    text(f"{x[0]} +{x[1] }")
-elif (x[0] == "speed"):
-    playerone.setSpeed(playerone.getSpeed()+ x[1])
-    text("your new stats are as follows")
-    playerone.printStats()
-    text(f"{x[0]} +{x[1] }")
-else:
-    pass
+x = g.gamblingHouse(playerone.getStrength(),playerone.getHealth(),playerone.getDexterity(),playerone.getIntelligence(),playerone.getSpeed()) # chance to increse stats using dice  
+adjustStat(x)
+# merchant encunter end / pass --------------------------
 x = "nothing",0
 player.waitingScreen(" loading ",1)
 
@@ -138,41 +124,15 @@ text("after the hard fight with the hilichurl, it lays in front of you defeated 
 playerone.setHealth(playerone.getHealth()+5)
 e1.changeMob("maguu_kenki")
 g.fight(playerone,e1)
-clear()   # chance to increse stats using dice  
+text("\n\ncongrats traveler on passing the second trial but there is always more")
+# merchant encunter --------------------------
+clear()  
 playerone.printStats()
-x = g.gamblingHouse(playerone.getStrength(),playerone.getHealth(),playerone.getDexterity(),playerone.getIntelligence(),playerone.getSpeed())
-print(x)
-text("\n\ncongrats traveler on passing the second trial ")
-text("but there is always more")
-if (x[0] == "str"):
-    playerone.setStrength(playerone.getStrength()+ x[1])
-    text("your new stats are as follows") 
-    playerone.printStats()
-elif (x[0] == "hp"):
-    text(f"{x[0]} +{x[1] }")
-    playerone.setHealth(playerone.getHealth()+ x[1])
-    text("your new stats are as follows")
-    playerone.printStats()
-    text(f"{x[0]} +{x[1] }")
-elif (x[0] == "dex"):
-    playerone.setDexterity(playerone.getDexterity()+x[1])
-    text("your new stats are as follows")
-    playerone.printStats()
-    text(f"{x[0]} +{x[1] }")
-elif (x[0] == "int"):
-    playerone.setIntelligence(playerone.getIntelligence()+ x[1])
-    text("your new stats are as follows")
-    playerone.printStats()
-    text(f"{x[0]} +{x[1] }")
-elif (x[0] == "speed"):
-    playerone.setSpeed(playerone.getSpeed()+ x[1])
-    text("your new stats are as follows")
-    playerone.printStats()
-    text(f"{x[0]} +{x[1] }")
-else:
-    pass
-x = "nothing",0
+x = g.gamblingHouse(playerone.getStrength(),playerone.getHealth(),playerone.getDexterity(),playerone.getIntelligence(),playerone.getSpeed())# chance to increse stats using dice  
+adjustStat(x)
+# merchant encunter end / pass --------------------------
 player.waitingScreen(" loading ",1)
+x = "nothing",0
 
 #stage three ------------------------
 clear()

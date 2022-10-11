@@ -1,7 +1,7 @@
 #implements the game data and logic.
 #import classes.barbarian as barb
-#clear = lambda: os.system('cls') # windows
-clear = lambda: os.system('clear') # mac
+clear = lambda: os.system('cls') # windows
+#clear = lambda: os.system('clear') # mac
 from mimetypes import init
 from operator import truediv
 from tabnanny import check
@@ -17,7 +17,7 @@ def text(words):
     for characters in words:
         sys.stdout.write(characters)
         sys.stdout.flush()
-        time.sleep(0.00000000000008)
+        time.sleep(0.0018)
 def selectOcupation():
     global ocupation
     while(True):
@@ -257,7 +257,8 @@ def fight(player, enemy) -> bool:
 def gameEnd():
     time.sleep(5)
     clear()
-    text("better luck next time traveler     . . . . . . . . ")
+    text("  ______                                            ______                                \n /      \                                          /      \                               \n/$$$$$$  |  ______   _____  ____    ______        /$$$$$$  | __     __  ______    ______  \n$$ | _$$/  /      \ /     \/    \  /      \       $$ |  $$ |/  \   /  |/      \  /      \ \n$$ |/    | $$$$$$  |$$$$$$ $$$$  |/$$$$$$  |      $$ |  $$ |$$  \ /$$//$$$$$$  |/$$$$$$  |\n$$ |$$$$ | /    $$ |$$ | $$ | $$ |$$    $$ |      $$ |  $$ | $$  /$$/ $$    $$ |$$ |  $$/ \n$$ \__$$ |/$$$$$$$ |$$ | $$ | $$ |$$$$$$$$/       $$ \__$$ |  $$ $$/  $$$$$$$$/ $$ |      \n$$    $$/ $$    $$ |$$ | $$ | $$ |$$       |      $$    $$/    $$$/   $$       |$$ |      \n $$$$$$/   $$$$$$$/ $$/  $$/  $$/  $$$$$$$/        $$$$$$/      $/     $$$$$$$/ $$/       \n                                                                                          \n                                                                                          \n                                                                                          ")
+    text("\nthere is always next time traveler i hope to see you again ")
     sys.exit()
 
 def properWager(wagerTypeInp,wagerAmount,stre,hp,dex,intl,speed):
